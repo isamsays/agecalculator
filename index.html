@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Age & Zodiac Calculator</title>
+  <style>
+    :root {
+      --primary: #ADD8E6;   /* light blue */
+      --secondary: #87CEEB; /* sky blue */
+      --accent: #00BFFF;    /* deep sky blue */
+      --bg: #ffffff;        /* white background */
+      --dark: #333333;
+      --light: #ffffff;
+      --radius: 8px;
+      --gap: 1rem;
+      --max-width: 600px;
+      --transition: 0.2s ease;
+      --font-heading: 'Segoe UI', Tahoma, sans-serif;
+      --font-body: 'Roboto', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--dark);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    header, footer {
+      background: var(--primary);
+      color: var(--dark);
+      text-align: center;
+      padding: var(--gap);
+    }
+    header h1 { font-family: var(--font-heading); font-size: 2rem; }
+    .container {
+      max-width: var(--max-width);
+      margin: var(--gap) auto;
+      padding: calc(var(--gap) * 1.5);
+      background: var(--light);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap);
+    }
+    @media(min-width: 600px) {
+      .form-row { grid-template-columns: 1fr 1fr; }
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .form-group label {
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .form-group input[type="date"] {
+      padding: 0.75rem;
+      border: 2px solid var(--secondary);
+      border-radius: var(--radius);
+      transition: border-color var(--transition);
+    }
+    .form-group input[type="date"]:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0,191,255,0.3);
+    }
+    button {
+      margin-top: var(--gap);
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--accent);
+      color: var(--light);
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    button:hover { background: var(--secondary); }
+    .results {
+      margin-top: var(--gap);
+      background: var(--primary);
+      padding: var(--gap);
+      border-radius: var(--radius);
+      color: var(--dark);
+    }
+    .results div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    .zodiac {
+      margin-top: var(--gap);
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .countdown {
+      margin-top: var(--gap);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: var(--gap);
+      text-align: center;
+    }
+    .countdown div {
+      background: var(--accent);
+      color: var(--light);
+      padding: var(--gap);
+      border-radius: var(--radius);
+    }
+    .content {
+      margin-top: var(--gap);
+      background: var(--light);
+      padding: var(--gap);
+      border-radius: var(--radius);
+    }
+    .content h2, .content h3 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .content p, .content ul, .content ol {
+      margin-bottom: var(--gap);
+    }
+    .faq-item { margin-bottom: var(--gap); }
+    .faq-item h4 {
+      background: var(--secondary);
+      padding: 0.5rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+    .faq-item p {
+      display: none;
+      padding: 0.5rem;
+      border-left: 4px solid var(--accent);
+      margin-top: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Age & Zodiac Calculator</h1>
+  </header>
+  <main class="container">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" />
+      </div>
+      <div class="form-group">
+        <label for="now">Current Date</label>
+        <input type="date" id="now" />
+      </div>
+    </div>
+    <button id="calcBtn">Calculate</button>
+
+    <section id="resultsWrap" style="display:none;">
+      <div class="results">
+        <div><span>Years</span><span id="yrs">0</span></div>
+        <div><span>Months</span><span id="mos">0</span></div>
+        <div><span>Days</span><span id="dys">0</span></div>
+      </div>
+      <div class="results">
+        <div><span>Hours</span><span id="hrs">0</span></div>
+        <div><span>Minutes</span><span id="mins">0</span></div>
+        <div><span>Seconds</span><span id="secs">0</span></div>
+      </div>
+      <div class="zodiac">Zodiac Sign: <span id="zodiacSign">—</span></div>
+      <div class="countdown" id="birthdayCountdown" style="display:none;">
+        <div><div id="bdDays">0</div><small>Days</small></div>
+        <div><div id="bdHrs">0</div><small>Hrs</small></div>
+        <div><div id="bdMins">0</div><small>Mins</small></div>
+        <div><div id="bdSecs">0</div><small>Secs</small></div>
+      </div>
+    </section>
+
+    <div class="content">
+      <h2>About This Age Calculator</h2>
+      <p>This tool calculates your age with precision, breaking down into years, months, days, hours, minutes, and seconds based on your selected dates.</p>
+      <h3>Key Benefits</h3>
+      <ul>
+        <li><strong>Accurate:</strong> Uses exact date math for precise results.</li>
+        <li><strong>Informative:</strong> Displays zodiac sign and countdown to next birthday.</li>
+        <li><strong>Engaging:</strong> Interactive UI provides instant feedback.</li>
+      </ul>
+      <h3>Use Cases</h3>
+      <p>Great for planning milestone celebrations, understanding age dynamics for legal or health reasons, and satisfying curious minds with a countdown to upcoming birthdays.</p>
+      <h3>Tips for Best Results</h3>
+      <ol>
+        <li>Ensure device date/time is accurate.</li>
+        <li>Use the optional current date field to simulate future age.</li>
+        <li>Refresh the page to reset all fields and countdown.</li>
+      </ol>
+
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-item">
+        <h4>How accurate is this calculator?</h4>
+        <p>It calculates down to the second based on your device's clock.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Can I use a future date?</h4>
+        <p>Yes, pick any date to see your age at that time.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Why do months vary?</h4>
+        <p>Different months have 28–31 days, so the breakdown adapts accordingly.</p>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; <span id="year"></span> Age & Zodiac Calculator</p>
+  </footer>
+  <script>
+    // Set default date
+    const dobInput = document.getElementById('dob');
+    const nowInput = document.getElementById('now');
+    nowInput.value = new Date().toISOString().slice(0,10);
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // FAQ toggle
+    document.querySelectorAll('.faq-item h4').forEach(h4 => {
+      h4.addEventListener('click', () => {
+        const p = h4.nextElementSibling;
+        p.style.display = p.style.display === 'block' ? 'none' : 'block';
+      });
+    });
+
+    // Zodiac calculation
+    function getZodiacSign(day, month) {
+      const ranges = [
+        { sign:'Capricorn', lastDay:19,m:1},{ sign:'Aquarius', lastDay:18,m:2},
+        { sign:'Pisces', lastDay:20,m:3},{ sign:'Aries', lastDay:19,m:4},
+        { sign:'Taurus', lastDay:20,m:5},{ sign:'Gemini', lastDay:20,m:6},
+        { sign:'Cancer', lastDay:22,m:7},{ sign:'Leo', lastDay:22,m:8},
+        { sign:'Virgo', lastDay:22,m:9},{ sign:'Libra', lastDay:22,m:10},
+        { sign:'Scorpio', lastDay:21,m:11},{ sign:'Sagittarius', lastDay:21,m:12}
+      ];
+      for(let r of ranges){ if(month===r.m) return day<=r.lastDay? r.sign : ranges[(ranges.indexOf(r)+1)%12].sign; }
+      return 'Capricorn';
+    }
+
+    // Countdown update
+    function updateCountdown(dob) {
+      const now=new Date(), y=now.getFullYear();
+      let next=new Date(y,dob.getMonth(),dob.getDate());
+      if(now>next) next=new Date(y+1,dob.getMonth(),dob.getDate());
+      const diff=next-now;
+      document.getElementById('bdDays').textContent = Math.floor(diff/864e5);
+      document.getElementById('bdHrs').textContent  = Math.floor(diff%864e5/36e5);
+      document.getElementById('bdMins').textContent = Math.floor(diff%36e5/6e4);
+      document.getElementById('bdSecs').textContent = Math.floor(diff%6e4/1e3);
+    }
+
+    document.getElementById('calcBtn').addEventListener('click',()=>{
+      if(!dobInput.value) return alert('Please select your birth date.');
+      const dob=new Date(dobInput.value);
+      const now=new Date(nowInput.value);
+      if(now<dob) return alert('Current date must be after birth date.');
+      const diff=new Date(now-dob);
+      document.getElementById('yrs').textContent = diff.getUTCFullYear()-1970;
+      document.getElementById('mos').textContent = diff.getUTCMonth();
+      document.getElementById('dys').textContent = diff.getUTCDate()-1;
+      document.getElementById('hrs').textContent = diff.getUTCHours();
+      document.getElementById('mins').textContent= diff.getUTCMinutes();
+      document.getElementById('secs').textContent= diff.getUTCSeconds();
+      document.getElementById('resultsWrap').style.display = 'block';
+      document.getElementById('zodiacSign').textContent = getZodiacSign(dob.getDate(), dob.getMonth()+1);
+      document.getElementById('birthdayCountdown').style.display = 'grid';
+      clearInterval(window.bdTimer);
+      window.bdTimer = setInterval(()=> updateCountdown(dob),1000);
+    });
+  </script>
+</body>
+</html>
