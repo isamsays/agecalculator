@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Instant Age & Zodiac Calculator - Precise Down to the Second</title>
-  <meta name="description" content="Calculate your exact age in years, months, days, hours, minutes, and seconds, discover your Zodiac sign, and count down to your next birthday with our intuitive Age & Zodiac Calculator." />
-  <link rel="canonical" href="https://zodiacagecalculator.netlify.app" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Instant Age & Zodiac Calculator - Precise Down to the Second</title>
+  <meta name="description" content="Calculate your exact age in years, months, days, hours, minutes, and seconds, discover your Zodiac sign, and count down to your next birthday" />
 
+   <link rel="canonical" href="https://zodiacagecalculator.netlify.app" />
   <meta name="keywords" content="age calculator, zodiac sign calculator, birthday countdown, precise age breakdown, date difference tool" />
-   <meta name="google-site-verification" content="Px8AHEA-oHVmixsaxJ0Gtu8CewWDc4WpScreqvjohro" />
+  <meta name="robots" content="index,follow"> 
+  
+  <meta name="google-site-verification" content="Px8AHEA-oHVmixsaxJ0Gtu8CewWDc4WpScreqvjohro" />
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHVZNYS75Q"></script>
 <script>
@@ -19,6 +21,7 @@
   gtag('config', 'G-WHVZNYS75Q');
 </script>
   
+  
   <style>
     :root {
       --primary: #ADD8E6;
@@ -26,7 +29,6 @@
       --accent: #00BFFF;
       --bg: #ffffff;
       --dark: #333333;
-      --light: #ffffff;
       --radius: 8px;
       --gap: 1rem;
       --max-width: 600px;
@@ -34,7 +36,11 @@
       --font-heading: 'Segoe UI', Tahoma, sans-serif;
       --font-body: 'Roboto', sans-serif;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: var(--font-body);
       background: var(--bg);
@@ -48,12 +54,16 @@
     .container {
       width: 100%;
       max-width: var(--max-width);
-      background: var(--light);
+      background: var(--bg);
       border-radius: var(--radius);
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: calc(var(--gap) * 1.5);
+      padding: calc(var(--gap) * 2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     header, footer {
+      width: 100%;
       background: var(--primary);
       color: var(--dark);
       text-align: center;
@@ -61,27 +71,40 @@
       border-radius: var(--radius);
       margin-bottom: var(--gap);
     }
-    header h1 { font-family: var(--font-heading); font-size: 2rem; }
+    header h1 {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+    }
     .form-row {
-      display: grid;
-      grid-template-columns: 1fr;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: var(--gap);
       margin-bottom: var(--gap);
     }
-    @media(min-width: 600px) {
-      .form-row { grid-template-columns: 1fr 1fr; }
+    @media (min-width: 600px) {
+      .form-row {
+        flex-direction: row;
+      }
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 280px;
     }
     .form-group label {
-      display: block;
       margin-bottom: 0.5rem;
       font-weight: 600;
+      text-align: left;
     }
     .form-group input[type="date"] {
-      width: 100%;
       padding: 0.75rem;
       border: 2px solid var(--secondary);
       border-radius: var(--radius);
       transition: border-color var(--transition);
+      width: 100%;
     }
     .form-group input[type="date"]:focus {
       border-color: var(--accent);
@@ -89,32 +112,36 @@
       box-shadow: 0 0 0 3px rgba(0,191,255,0.3);
     }
     #calcBtn {
-      display: block;
-      margin: 0 auto;
+      margin-top: var(--gap);
       padding: 0.75rem 2rem;
       background: var(--accent);
-      color: var(--light);
+      color: var(--bg);
       border: none;
       border-radius: var(--radius);
       font-size: 1.1rem;
       font-weight: 600;
       cursor: pointer;
       transition: background var(--transition);
+      align-self: center;
     }
-    #calcBtn:hover { background: var(--secondary); }
+    #calcBtn:hover {
+      background: var(--secondary);
+    }
     #resultsWrap {
-      text-align: center;
+      width: 100%;
       margin-top: var(--gap);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--gap);
     }
     .results {
-      display: inline-block;
+      width: 100%;
+      max-width: 300px;
       background: var(--primary);
       padding: var(--gap);
       border-radius: var(--radius);
       color: var(--dark);
-      margin: var(--gap) auto;
-      min-width: 280px;
-      text-align: left;
     }
     .results div {
       display: flex;
@@ -122,18 +149,23 @@
       margin-bottom: 0.5rem;
     }
     .zodiac {
-      margin-top: var(--gap);
       font-size: 1.25rem;
       font-weight: 600;
+      color: var(--accent);
     }
     .countdown {
-      display: inline-block;
-      margin: var(--gap) auto;
-      padding: var(--gap);
+      width: 100%;
+      max-width: 300px;
       background: var(--secondary);
+      padding: var(--gap);
       border-radius: var(--radius);
+      color: var(--bg);
     }
-    .countdown div { margin-bottom: 0.5rem; }
+    .countdown div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -144,16 +176,16 @@
     <div class="form-row">
       <div class="form-group">
         <label for="dob">Date of Birth</label>
-        <input type="date" id="dob" />
+        <input type="date" id="dob">
       </div>
       <div class="form-group">
         <label for="now">Current Date</label>
-        <input type="date" id="now" />
+        <input type="date" id="now">
       </div>
     </div>
     <button id="calcBtn">Calculate</button>
-    <div id="resultsWrap" style="display:none;">
-      <div class="results" id="ageResults">
+    <div id="resultsWrap" style="display: none;">
+      <div class="results">
         <div><span>Years:</span><span id="yrs">0</span></div>
         <div><span>Months:</span><span id="mos">0</span></div>
         <div><span>Days:</span><span id="dys">0</span></div>
@@ -162,12 +194,12 @@
         <div><span>Seconds:</span><span id="secs">0</span></div>
       </div>
       <div class="zodiac">Zodiac Sign: <span id="zodiacSign">—</span></div>
-      <div class="countdown" id="birthdayCountdown">
-        <div>Next Birthday In:</div>
-        <div><span id="bdDays">0</span> Days</div>
-        <div><span id="bdHrs">0</span> Hrs</div>
-        <div><span id="bdMins">0</span> Mins</div>
-        <div><span id="bdSecs">0</span> Secs</div>
+      <div class="countdown" id="birthdayCountdown" style="display: none;">
+        <div><span>Next Birthday In:</span><span></span></div>
+        <div><span id="bdDays">0</span><span> Days</span></div>
+        <div><span id="bdHrs">0</span><span> Hrs</span></div>
+        <div><span id="bdMins">0</span><span> Mins</span></div>
+        <div><span id="bdSecs">0</span><span> Secs</span></div>
       </div>
     </div>
     <footer>
@@ -175,40 +207,42 @@
     </footer>
   </div>
   <script>
-    // Default dates
-    document.getElementById('now').value = new Date().toISOString().slice(0,10);
+    // Initialize defaults
+    document.getElementById('now').value = new Date().toISOString().slice(0, 10);
     document.getElementById('year').textContent = new Date().getFullYear();
-    // Zodiac sign function
+
+    // Determine zodiac sign
     function getZodiacSign(day, month) {
       const ranges = [
-        { sign:'Capricorn', lastDay:19,m:1},{ sign:'Aquarius', lastDay:18,m:2},
-        { sign:'Pisces', lastDay:20,m:3},{ sign:'Aries', lastDay:19,m:4},
-        { sign:'Taurus', lastDay:20,m:5},{ sign:'Gemini', lastDay:20,m:6},
-        { sign:'Cancer', lastDay:22,m:7},{ sign:'Leo', lastDay:22,m:8},
-        { sign:'Virgo', lastDay:22,m:9},{ sign:'Libra', lastDay:22,m:10},
-        { sign:'Scorpio', lastDay:21,m:11},{ sign:'Sagittarius', lastDay:21,m:12}
+        { sign: 'Capricorn', end: 19, m: 1 }, { sign: 'Aquarius', end: 18, m: 2 },
+        { sign: 'Pisces', end: 20, m: 3 }, { sign: 'Aries', end: 19, m: 4 },
+        { sign: 'Taurus', end: 20, m: 5 }, { sign: 'Gemini', end: 20, m: 6 },
+        { sign: 'Cancer', end: 22, m: 7 }, { sign: 'Leo', end: 22, m: 8 },
+        { sign: 'Virgo', end: 22, m: 9 }, { sign: 'Libra', end: 22, m: 10 },
+        { sign: 'Scorpio', end: 21, m: 11 }, { sign: 'Sagittarius', end: 21, m: 12 }
       ];
       for (let r of ranges) {
-        if (month === r.m) return day <= r.lastDay ? r.sign : ranges[(ranges.indexOf(r)+1)%12].sign;
+        if (month === r.m) {
+          return day <= r.end ? r.sign : ranges[(ranges.indexOf(r) + 1) % 12].sign;
+        }
       }
       return 'Capricorn';
     }
-    // Birthday countdown
+
+    // Update countdown to next birthday
     function updateCountdown(dob) {
       const now = new Date();
       let next = new Date(now.getFullYear(), dob.getMonth(), dob.getDate());
-      if (now > next) next.setFullYear(now.getFullYear()+1);
+      if (now > next) next.setFullYear(next.getFullYear() + 1);
       const diff = next - now;
-      const d = Math.floor(diff/864e5);
-      const h = Math.floor(diff%864e5/36e5);
-      const m = Math.floor(diff%36e5/6e4);
-      const s = Math.floor(diff%6e4/1e3);
-      document.getElementById('bdDays').textContent = d;
-      document.getElementById('bdHrs').textContent = h;
-      document.getElementById('bdMins').textContent = m;
-      document.getElementById('bdSecs').textContent = s;
+      document.getElementById('bdDays').textContent = Math.floor(diff / 86400000);
+      document.getElementById('bdHrs').textContent = Math.floor((diff % 86400000) / 3600000);
+      document.getElementById('bdMins').textContent = Math.floor((diff % 3600000) / 60000);
+      document.getElementById('bdSecs').textContent = Math.floor((diff % 60000) / 1000);
     }
-    document.getElementById('calcBtn').addEventListener('click', () => {
+
+    // Handle calculate button click
+    document.getElementById('calcBtn').addEventListener('click', function() {
       const dobVal = document.getElementById('dob').value;
       const nowVal = document.getElementById('now').value;
       if (!dobVal) { alert('Please select your birth date.'); return; }
@@ -222,11 +256,11 @@
       document.getElementById('hrs').textContent = diff.getUTCHours();
       document.getElementById('mins').textContent = diff.getUTCMinutes();
       document.getElementById('secs').textContent = diff.getUTCSeconds();
-      document.getElementById('zodiacSign').textContent = getZodiacSign(dob.getDate(), dob.getMonth()+1);
-      document.getElementById('resultsWrap').style.display = 'block';
+      document.getElementById('zodiacSign').textContent = getZodiacSign(dob.getDate(), dob.getMonth() + 1);
+      document.getElementById('resultsWrap').style.display = 'flex';
       clearInterval(window.bdTimer);
       updateCountdown(dob);
-      window.bdTimer = setInterval(() => updateCountdown(dob), 1000);
+      window.bdTimer = setInterval(function() { updateCountdown(dob); }, 1000);
     });
   </script>
 </body>
